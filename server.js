@@ -10,6 +10,7 @@ const {
 } = require("./consultas");
 const app = express();
 const jwt = require("jsonwebtoken");
+const expressFileUpload = require("express-fileupload");
 
 //Config
 app.listen(3001, () => console.log("Servidor en puerto 3001"));
@@ -25,6 +26,15 @@ app.engine(
   })
 );
 const secretKey = "NASA";
+
+app.use(express.static("public"));
+app.use(
+  expressFileUpload({
+    limits: { fileSize: 1000 },
+    abortOnLimit: true,
+    responseOnLimit: "Imagen muy pesada para ser un alienigena",
+  })
+);
 
 //Rutas
 app.get("/", (req, res) => {
@@ -78,5 +88,13 @@ app.get("/Evidencias", (req, res) => {
           layout: "Evidencias",
           nombre: payload.nombre,
         });
+  });
+});
+
+app.post("/upload", (req, res) => {
+  const { foto } = req.files;
+  const { name } = foto;
+  foto.mv(`${__dirname}/archivos/${name}`, (err) => {
+    res.send("Archivo cargado con éxito, Gracias por contribuir con la NASA");
   });
 });
