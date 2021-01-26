@@ -36,6 +36,7 @@ const checkAuth = async (id, auth) => {
   );
   return result;
 };
+
 const getUser = async (email, password) => {
   const result = await pool.query("SELECT * FROM usuarios where email = $1", [
     email,

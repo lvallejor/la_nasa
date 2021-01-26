@@ -27,10 +27,9 @@ app.engine(
 );
 const secretKey = "NASA";
 
-app.use(express.static("public"));
 app.use(
   expressFileUpload({
-    limits: { fileSize: 1000 },
+    limits: { fileSize: 10000000 },
     abortOnLimit: true,
     responseOnLimit: "Imagen muy pesada para ser un alienigena",
   })
