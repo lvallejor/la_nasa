@@ -11,9 +11,9 @@ const pool = new Pool({
 const insertarUsuario = async (email, nombre, password) => {
   try {
     const result = await pool.query(
-      `INSERT INTO usuarios (email, nombre, password, auth) VALUES ('${email}', '${nombre}', '${password}', '${false}') RETURNING *`
+      "INSERT INTO usuarios (email, nombre, password, auth) VALUES ($1, $2, $3, false) RETURNING *",
+      [email, nombre, password]
     );
-    pool.end();
     return result.rows;
   } catch (error) {
     console.log(error);
@@ -23,9 +23,10 @@ const insertarUsuario = async (email, nombre, password) => {
 const listaUsuarios = async () => {
   try {
     const result = await pool.query("SELECT * FROM usuarios");
-    return result;
+    return result.rows;
   } catch (error) {
     console.log(error);
   }
 };
+
 module.exports = { insertarUsuario, listaUsuarios };
