@@ -11,6 +11,7 @@ const {
 const app = express();
 const jwt = require("jsonwebtoken");
 const expressFileUpload = require("express-fileupload");
+const confirmacionMail = require("./nodemailer");
 
 //Config
 app.listen(3001, () => console.log("Servidor en puerto 3001"));
@@ -42,7 +43,14 @@ app.get("/", (req, res) => {
 
 app.post("/usuario", async (req, res) => {
   const { email, nombre, password } = req.body;
-  res.send(await insertarUsuario(email, nombre, password));
+  const dataUsuario = await insertarUsuario(email, nombre, password);
+  const template = `<h1>Hola ${nombre}<h1/> <h2>En las proximas 24 horas te avisaremos si puedes acceder al area 51<h2/>`;
+  dataUsuario
+    ? res.render("Bienvenida", { layout: "Bienvenida", nombre })
+    : res.send(`<script>alert("No existes en la base de datos")</script>`);
+  dataUsuario
+    ? await confirmacionMail(email, "Verificacion NASA", template)
+    : false;
 });
 
 app.get("/Admin", async (req, res) => {
@@ -52,8 +60,10 @@ app.get("/Admin", async (req, res) => {
 
 app.post("/auth", async (req, res) => {
   const { id, auth } = req.body;
+  const { email } = req.body;
   try {
     const result = await checkAuth(id, auth);
+
     res.send(result);
   } catch (e) {
     res.status(500).send(e);
