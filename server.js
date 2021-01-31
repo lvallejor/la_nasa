@@ -60,10 +60,8 @@ app.get("/Admin", async (req, res) => {
 
 app.post("/auth", async (req, res) => {
   const { id, auth } = req.body;
-  const { email } = req.body;
   try {
     const result = await checkAuth(id, auth);
-
     res.send(result);
   } catch (e) {
     res.status(500).send(e);
