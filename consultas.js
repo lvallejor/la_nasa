@@ -11,7 +11,7 @@ const pool = new Pool({
 const insertarUsuario = async (email, nombre, password) => {
   try {
     const result = await pool.query(
-      "INSERT INTO d15k0intofv0m8 (email, nombre, password, auth) VALUES ($1, $2, $3, false) RETURNING *",
+      "INSERT INTO usuarios (email, nombre, password, auth) VALUES ($1, $2, $3, false) RETURNING *",
       [email, nombre, password]
     );
     return result.rows;
