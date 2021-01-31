@@ -14,7 +14,11 @@ const expressFileUpload = require("express-fileupload");
 const confirmacionMail = require("./nodemailer");
 
 //Config
-app.listen(3001, () => console.log("Servidor en puerto 3001"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Our app is running on port ${PORT}`);
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
