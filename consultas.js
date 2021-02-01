@@ -1,11 +1,12 @@
 const { Pool } = require("pg");
+require("dotenv").config();
 
 const pool = new Pool({
-  user: "spacypfyfqxbzn",
-  host: "ec2-52-4-177-4.compute-1.amazonaws.com",
-  password: "bc3173aa30b749e696a263709d3f2d067c9b0b2a3eb328f1a6e853612c75e440",
-  database: "d15k0intofv0m8",
-  port: 5432,
+  user: process.env.USER,
+  host: process.env.HOST,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+  port: process.env.PORT_DB,
 });
 
 const insertarUsuario = async (email, nombre, password) => {
